@@ -1,0 +1,600 @@
+\documentclass[11pt]{article}
+
+% =====================================================
+% Layout & Typography
+% =====================================================
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% =====================================================
+% Math
+% =====================================================
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+
+% =====================================================
+% Lists & Links
+% =====================================================
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+% =====================================================
+% Framed Exercise Environment (LEGAL)
+% =====================================================
+\usepackage{mdframed}
+
+\newcounter{exercise}
+
+\newmdenv[
+  linewidth=0.6pt,
+  skipabove=1.2em,
+  skipbelow=1.2em,
+  innerleftmargin=1em,
+  innerrightmargin=1em,
+  innertopmargin=0.8em,
+  innerbottommargin=0.8em
+]{exercisebox}
+
+\newenvironment{exercise}[1]
+{%
+  \refstepcounter{exercise}
+  \begin{exercisebox}
+  \noindent\textbf{Problem \theexercise.} \textit{#1}\par\medskip
+}
+{%
+  \end{exercisebox}
+}
+
+% =====================================================
+% Solution Environment
+% =====================================================
+\newenvironment{solution}
+{\par\noindent\textbf{Solution.}\ }
+{\hfill$\square$\par}
+
+% =====================================================
+% Common Commands
+% =====================================================
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Null}{\operatorname{null}}
+\newcommand{\Range}{\operatorname{range}}
+
+% =====================================================
+% Metadata
+% =====================================================
+\title{Linear Algebra Done Right \\ \large Section 1A: $\R^n$ and $\C^n$}
+\author{Naman Tyagi}
+\date{}
+
+% =====================================================
+% Document
+% =====================================================
+\begin{document}
+\maketitle
+
+\begin{exercise}{}
+Show that $\alpha + \beta = \beta + \alpha\quad   \forall \alpha, \beta \in \C$.
+\end{exercise}
+
+\begin{solution}
+We know that we can write $\alpha$ and $\beta$ as 
+\[
+\begin{aligned}
+\alpha &= a_1 + ib_1, \\
+\beta  &= a_2 + ib_2 .
+\end{aligned}
+\]
+
+Since addition in $\mathbb{R}$ is commutative, we may rearrange terms. Thus,
+\[
+\begin{aligned}
+\alpha + \beta &= (a_1 + ib_1) + (a_2 + ib_2) \\
+&= a_1 + a_2 + i(b_1 + b_2) \\
+&= a_2 + a_1 + i(b_2 + b_1) \\
+&= (a_2 + ib_2) + (a_1 + ib_1) \\
+&= \beta + \alpha .
+\end{aligned}
+\]
+
+
+\end{solution}
+
+\begin{exercise}{}
+Show that $(\alpha + \beta) + \lambda = \alpha + (\beta + \lambda)\quad
+\forall \alpha, \beta, \lambda \in \mathbb{C}$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+\alpha = a_1 + b_1 i,\quad
+\beta = a_2 + b_2 i,\quad
+\lambda = a_3 + b_3 i,
+\]
+where $a_n, b_n \in \mathbb{R}$.
+
+Then
+\[
+\begin{aligned}
+(\alpha + \beta) + \lambda
+&= (a_1 + a_2 + a_3) + (b_1 + b_2 + b_3)i \\
+&= a_1 + b_1 i + (a_2 + a_3) + (b_2 + b_3)i \\
+&= \alpha + (\beta + \lambda),
+\end{aligned}
+\]
+since addition in $\mathbb{R}$ is associative.
+\end{solution}
+
+\begin{exercise}{}
+Show that $(\alpha\beta)\lambda = \alpha(\beta\lambda)\quad
+\forall \alpha, \beta, \lambda \in \mathbb{C}$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+\alpha = a_1 + b_1 i,\quad
+\beta = a_2 + b_2 i,\quad
+\lambda = a_3 + b_3 i,
+\]
+where $a_n, b_n \in \mathbb{R}$.
+
+First compute $\alpha\beta$:
+\[
+\begin{aligned}
+\alpha\beta
+&= (a_1 + b_1 i)(a_2 + b_2 i) \\
+&= (a_1a_2 - b_1b_2) + (a_1b_2 + a_2b_1)i.
+\end{aligned}
+\]
+
+Now,
+\[
+\begin{aligned}
+(\alpha\beta)\lambda
+&= \bigl((a_1a_2 - b_1b_2) + (a_1b_2 + a_2b_1)i\bigr)(a_3 + b_3 i) \\
+&= (a_1a_2a_3 - b_1b_2a_3 - a_1b_2b_3 - a_2b_1b_3) \\
+&\quad + (a_1a_2b_3 - b_1b_2b_3 + a_1b_2a_3 + a_2b_1a_3)i.
+\end{aligned}
+\]
+
+Next compute $\beta\lambda$:
+\[
+\begin{aligned}
+\beta\lambda
+&= (a_2 + b_2 i)(a_3 + b_3 i) \\
+&= (a_2a_3 - b_2b_3) + (a_2b_3 + a_3b_2)i.
+\end{aligned}
+\]
+
+Then,
+\[
+\begin{aligned}
+\alpha(\beta\lambda)
+&= (a_1 + b_1 i)\bigl((a_2a_3 - b_2b_3) + (a_2b_3 + a_3b_2)i\bigr) \\
+&= (a_1a_2a_3 - a_1b_2b_3 - b_1a_2b_3 - b_1a_3b_2) \\
+&\quad + (a_1a_2b_3 + a_1a_3b_2 - b_1b_2b_3 + b_1a_2a_3)i.
+\end{aligned}
+\]
+
+Reordering terms using associativity and commutativity of addition and
+multiplication in $\mathbb{R}$, we see that
+\[
+(\alpha\beta)\lambda = \alpha(\beta\lambda).
+\]
+\end{solution}
+
+\begin{exercise}
+Show that for every $\alpha \in \mathbb{C}$, there exists a unique
+$\beta \in \mathbb{C}$ such that $\alpha + \beta = 0$.
+\end{exercise}
+
+\begin{solution}
+Let $\alpha \in \mathbb{C}$. Then $\alpha$ can be written as
+\[
+\alpha = a + bi,
+\]
+where $a, b \in \mathbb{R}$.
+
+Define
+\[
+\beta = -a - bi.
+\]
+Then $\beta \in \mathbb{C}$ and
+\[
+\alpha + \beta = (a + bi) + (-a - bi) = 0.
+\]
+Hence, such a $\beta$ exists.
+
+Now suppose that $\beta_1, \beta_2 \in \mathbb{C}$ both satisfy
+\[
+\alpha + \beta_1 = 0 \quad \text{and} \quad \alpha + \beta_2 = 0.
+\]
+Then
+\[
+\alpha + \beta_1 = \alpha + \beta_2.
+\]
+By adding $-\alpha$ to both sides, we obtain
+\[
+\beta_1 = \beta_2.
+\]
+Therefore, $\beta$ is unique.
+\end{solution}
+
+\begin{exercise}{}
+Show that for every $\alpha \in \mathbb{C}$ with $\alpha \neq 0$,
+there exists a unique $\beta \in \mathbb{C}$ such that
+$\alpha\beta = 1$.
+\end{exercise}
+
+\begin{solution}
+Let $\alpha \in \mathbb{C}$ with $\alpha \neq 0$. Then $\alpha$ can be written as
+\[
+\alpha = a + bi,
+\]
+where $a, b \in \mathbb{R}$ and not both $a$ and $b$ are zero.
+
+Define
+\[
+\beta = \frac{a - bi}{a^2 + b^2}.
+\]
+Since $a^2 + b^2 \neq 0$, $\beta \in \mathbb{C}$.
+
+Now compute
+\[
+\begin{aligned}
+\alpha\beta
+&= (a + bi)\frac{a - bi}{a^2 + b^2} \\
+&= \frac{a^2 + b^2}{a^2 + b^2} \\
+&= 1.
+\end{aligned}
+\]
+Hence, such a $\beta$ exists.
+
+Now suppose that $\beta_1, \beta_2 \in \mathbb{C}$ both satisfy
+\[
+\alpha\beta_1 = 1 \quad \text{and} \quad \alpha\beta_2 = 1.
+\]
+Then
+\[
+\alpha\beta_1 = \alpha\beta_2.
+\]
+Since $\alpha \neq 0$, multiplying both sides by $\alpha^{-1}$ gives
+\[
+\beta_1 = \beta_2.
+\]
+Therefore, $\beta$ is unique.
+\end{solution}
+
+\begin{exercise}{}
+Show that
+\[
+\frac{-1 + \sqrt{3}i}{2}
+\]
+is a cube root of $1$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+z = \frac{-1 + \sqrt{3}i}{2}.
+\]
+
+First compute $z^2$:
+\[
+\begin{aligned}
+z^2
+&= \left(\frac{-1 + \sqrt{3}i}{2}\right)^2 \\
+&= \frac{1 - 2\sqrt{3}i + 3i^2}{4} \\
+&= \frac{-2 - 2\sqrt{3}i}{4} \\
+&= \frac{-1 - \sqrt{3}i}{2}.
+\end{aligned}
+\]
+
+Now compute $z^3$:
+\[
+\begin{aligned}
+z^3
+&= z^2 \cdot z \\
+&= \left(\frac{-1 - \sqrt{3}i}{2}\right)
+   \left(\frac{-1 + \sqrt{3}i}{2}\right) \\
+&= \frac{(-1)^2 - (\sqrt{3}i)^2}{4} \\
+&= \frac{1 - (-3)}{4} \\
+&= 1.
+\end{aligned}
+\]
+
+Hence,
+\[
+\left(\frac{-1 + \sqrt{3}i}{2}\right)^3 = 1,
+\]
+and therefore $\frac{-1 + \sqrt{3}i}{2}$ is a cube root of unity.
+\end{solution}
+
+\begin{solution}[Alternatively]
+Let
+\[
+z = \frac{-1 + \sqrt{3}i}{2}.
+\]
+Note that
+\[
+\Re(z) = -\frac{1}{2}, \qquad \Im(z) = \frac{\sqrt{3}}{2}.
+\]
+Thus,
+\[
+z = \cos\!\left(\frac{2\pi}{3}\right)
++ i\sin\!\left(\frac{2\pi}{3}\right).
+\]
+
+By De Moivre's theorem, for any integer $n$,
+\[
+\left(\cos\theta + i\sin\theta\right)^n
+= \cos(n\theta) + i\sin(n\theta).
+\]
+Applying this with $\theta = \frac{2\pi}{3}$ and $n = 3$, we obtain
+\[
+\begin{aligned}
+z^3
+&= \cos(2\pi) + i\sin(2\pi) \\
+&= 1.
+\end{aligned}
+\]
+
+Hence, $\frac{-1 + \sqrt{3}i}{2}$ is a cube root of $1$.
+\end{solution}
+
+\begin{exercise}{}
+Find two distinct square roots of $i$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+x = a + bi,
+\]
+where $a, b \in \mathbb{R}$. Then
+\[
+\begin{aligned}
+x^2
+&= (a + bi)^2 \\
+&= a^2 - b^2 + 2abi.
+\end{aligned}
+\]
+
+We require $x^2 = i = 0 + 1i$. Equating real and imaginary parts gives
+\[
+\begin{cases}
+a^2 - b^2 = 0, \\
+2ab = 1.
+\end{cases}
+\]
+
+From $a^2 - b^2 = 0$, we have $a^2 = b^2$, hence $a = \pm b$.
+
+Substituting into $2ab = 1$, we obtain
+\[
+2a^2 = 1,
+\]
+so
+\[
+a^2 = \frac{1}{2}.
+\]
+Thus
+\[
+a = \pm \frac{1}{\sqrt{2}},
+\quad
+b = \pm \frac{1}{\sqrt{2}},
+\]
+with the same sign as $a$.
+
+Hence, the two distinct square roots of $i$ are
+\[
+\frac{1}{\sqrt{2}}(1 + i)
+\quad \text{and} \quad
+-\frac{1}{\sqrt{2}}(1 + i).
+\]
+\end{solution}
+
+\begin{exercise}{}
+Find $x \in \mathbb{R}^4$ such that
+\[
+(4, -3, 1, 7) + 2x = (5, 9, -6, 8).
+\]
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+x = (x_1, x_2, x_3, x_4) \in \mathbb{R}^4.
+\]
+Then
+\[
+(4, -3, 1, 7) + 2x
+= (4 + 2x_1,\, -3 + 2x_2,\, 1 + 2x_3,\, 7 + 2x_4).
+\]
+
+Equating components with $(5, 9, -6, 8)$, we obtain
+\[
+\begin{cases}
+4 + 2x_1 = 5, \\
+-3 + 2x_2 = 9, \\
+1 + 2x_3 = -6, \\
+7 + 2x_4 = 8.
+\end{cases}
+\]
+
+Solving,
+\[
+x_1 = \frac{1}{2}, \quad
+x_2 = 6, \quad
+x_3 = -\frac{7}{2}, \quad
+x_4 = \frac{1}{2}.
+\]
+
+Hence,
+\[
+x = \left(\frac{1}{2},\, 6,\, -\frac{7}{2},\, \frac{1}{2}\right).
+\]
+\end{solution}
+
+\begin{exercise}{}
+Explain why there does not exist $\lambda \in \mathbb{C}$ such that
+\[
+\lambda(2 - 3i,\, 5 + 4i,\, -6 + 7i)
+= (12 - 5i,\, 7 + 22i,\, -32 - 9i).
+\]
+\end{exercise}
+
+\begin{solution}
+Suppose, for the sake of contradiction, that there exists
+$\lambda \in \mathbb{C}$ such that
+\[
+\lambda(2 - 3i,\, 5 + 4i,\, -6 + 7i)
+= (12 - 5i,\, 7 + 22i,\, -32 - 9i).
+\]
+
+Then equality of vectors in $\mathbb{C}^3$ implies equality of
+corresponding components, so
+\[
+\begin{cases}
+\lambda(2 - 3i) = 12 - 5i, \\
+\lambda(5 + 4i) = 7 + 22i, \\
+\lambda(-6 + 7i) = -32 - 9i.
+\end{cases}
+\]
+
+From the first equation,
+\[
+\lambda = \dfrac{12 - 5i}{2 - 3i}.
+\]
+From the second equation,
+\[
+\lambda = \dfrac{7 + 22i}{5 + 4i}.
+\]
+
+Since
+\[
+\dfrac{12 - 5i}{2 - 3i} \neq \dfrac{7 + 22i}{5 + 4i},
+\]
+no single complex number $\lambda$ can satisfy both equations.
+Hence, there does not exist $\lambda \in \mathbb{C}$ such that
+\[
+\lambda(2 - 3i,\, 5 + 4i,\, -6 + 7i)
+= (12 - 5i,\, 7 + 22i,\, -32 - 9i).
+\]
+\end{solution}
+
+\begin{exercise}{}
+Show that $(x + y) + z = x + (y + z)$ for all $x, y, z \in \mathbb{F}^n$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+x = (x_1,\dots,x_n),\quad
+y = (y_1,\dots,y_n),\quad
+z = (z_1,\dots,z_n) \in \mathbb{F}^n.
+\]
+Then
+\[
+(x+y)+z
+= (x_1+y_1+z_1,\dots,x_n+y_n+z_n)
+= x+(y+z),
+\]
+since addition in $\mathbb{F}$ is associative.
+\end{solution}
+
+\begin{exercise}{}
+Show that $(ab)x = a(bx)$ for all $x \in \mathbb{F}^n$ and all $a,b \in \mathbb{F}$.
+\end{exercise}
+
+\begin{solution}
+Let $x = (x_1,\dots,x_n) \in \mathbb{F}^n$. Then
+\[
+(ab)x = (abx_1,\dots,abx_n)
+= a(bx_1,\dots,bx_n)
+= a(bx),
+\]
+since multiplication in $\mathbb{F}$ is associative.
+\end{solution}
+
+\begin{exercise}{}
+Show that $1x = x$ for all $x \in \mathbb{F}^n$.
+\end{exercise}
+
+\begin{solution}
+Let $x = (x_1,\dots,x_n) \in \mathbb{F}^n$. Then
+\[
+1x = (1x_1,\dots,1x_n) = (x_1,\dots,x_n) = x,
+\]
+since $1$ is the multiplicative identity in $\mathbb{F}$.
+\end{solution}
+
+\begin{exercise}{}
+Show that $\lambda(x+y) = \lambda x + \lambda y$
+for all $\lambda \in \mathbb{F}$ and all $x,y \in \mathbb{F}^n$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+x = (x_1,\dots,x_n),\quad
+y = (y_1,\dots,y_n) \in \mathbb{F}^n.
+\]
+Then
+\[
+\lambda(x+y)
+= (\lambda(x_1+y_1),\dots,\lambda(x_n+y_n))
+= (\lambda x_1+\lambda y_1,\dots,\lambda x_n+\lambda y_n)
+= \lambda x + \lambda y,
+\]
+since multiplication distributes over addition in $\mathbb{F}$.
+\end{solution}
+
+\begin{exercise}{}
+Show that $(a+b)x = ax + bx$
+for all $a,b \in \mathbb{F}$ and all $x \in \mathbb{F}^n$.
+\end{exercise}
+
+\begin{solution}
+Let $x = (x_1,\dots,x_n) \in \mathbb{F}^n$. Then
+\[
+(a+b)x
+= ((a+b)x_1,\dots,(a+b)x_n)
+= (ax_1+bx_1,\dots,ax_n+bx_n)
+= ax + bx,
+\]
+since multiplication distributes over addition in $\mathbb{F}$.
+\end{solution}
+
+\begin{exercise}{}
+Show that $(a+b)x = ax + bx$
+for all $a,b \in \mathbb{F}$ and all $x \in \mathbb{F}^n$.
+\end{exercise}
+
+\begin{solution}
+Let $x = (x_1,\dots,x_n) \in \mathbb{F}^n$. Then
+\[
+(a+b)x
+= ((a+b)x_1,\dots,(a+b)x_n)
+= (ax_1+bx_1,\dots,ax_n+bx_n)
+= ax + bx,
+\]
+since multiplication distributes over addition in $\mathbb{F}$.
+\end{solution}
+
+\end{document}
+
