@@ -1,2 +1,8 @@
-# ladr-4e-solutions
-My solutions for the problem sets in Linear Algebra Done Right 4th Edition
+# Linear Algebra Done Right (4th ed.) - Solutions
+
+This repository contains independently written solutions to exercises from *Linear Algebra Done Right*, 4th edition, by Sheldon Axler.
+
+## Chapter 1
+
+### Section 1A - $\mathbb(R^n)$ and $\mathbb(C^n)$
+📄
