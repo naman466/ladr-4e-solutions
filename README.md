@@ -4,5 +4,5 @@ This repository contains independently written solutions to exercises from *Line
 
 ## Chapter 1
 
-### Section 1A - $\mathbb(R^n)$ and $\mathbb(C^n)$
+### Section 1A - $ℝ^n$ and $ℂ^n$
 📄
