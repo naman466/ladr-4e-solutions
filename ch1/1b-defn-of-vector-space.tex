@@ -1,0 +1,496 @@
+\documentclass[11pt]{article}
+
+% =====================================================
+% Layout & Typography
+% =====================================================
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% =====================================================
+% Math
+% =====================================================
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+
+% =====================================================
+% Lists & Links
+% =====================================================
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+% =====================================================
+% Framed Exercise Environment (LEGAL)
+% =====================================================
+\usepackage{mdframed}
+
+\newcounter{exercise}
+
+\newmdenv[
+  linewidth=0.6pt,
+  skipabove=1.2em,
+  skipbelow=1.2em,
+  innerleftmargin=1em,
+  innerrightmargin=1em,
+  innertopmargin=0.8em,
+  innerbottommargin=0.8em
+]{exercisebox}
+
+\newenvironment{exercise}[1]
+{%
+  \refstepcounter{exercise}
+  \begin{exercisebox}
+  \noindent\textbf{Problem \theexercise.} \textit{#1}\par\medskip
+}
+{%
+  \end{exercisebox}
+}
+
+% =====================================================
+% Solution Environment
+% =====================================================
+\newenvironment{solution}
+{\par\noindent\textbf{Solution.}\ }
+{\hfill$\square$\par}
+
+% =====================================================
+% Common Commands
+% =====================================================
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Null}{\operatorname{null}}
+\newcommand{\Range}{\operatorname{range}}
+
+% =====================================================
+% Metadata
+% =====================================================
+\title{Linear Algebra Done Right \\ \large Section 1B: Definition of Vector Space}
+\author{Naman Tyagi}
+\date{}
+
+% =====================================================
+% Document
+% =====================================================
+\begin{document}
+\maketitle
+
+\begin{exercise}{}
+Prove that $-(-v) = v$ for every $v \in V$.
+\end{exercise}
+
+\begin{solution}
+Let $v \in V$ be arbitrary. Write
+\[
+v = (x_1, x_2, \dots).
+\]
+Then
+\[
+-v = (-x_1, -x_2, \dots).
+\]
+Taking the negative again,
+\[
+-(-v) = (-(-x_1), -(-x_2), \dots) = (x_1, x_2, \dots) = v.
+\]
+\end{solution}
+
+\begin{exercise}{}
+Suppose $a \in \mathbb{F}$, $v \in V$, and $av = 0$. Prove that $a = 0$ or $v = 0$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+v = (x_1, x_2, \dots).
+\]
+Then
+\[
+av = (ax_1, ax_2, \dots).
+\]
+
+We are given that
+\[
+av = (0, 0, \dots).
+\]
+Hence,
+\[
+(ax_1, ax_2, \dots) = (0, 0, \dots).
+\]
+
+Equating corresponding components, we obtain
+\[
+ax_1 = 0, \; ax_2 = 0, \; \dots
+\]
+
+Thus, either $a = 0$ or $x_1 = 0$.  
+If $a \neq 0$, then
+\[
+x_1 = x_2 = \cdots = 0,
+\]
+which implies $v = 0$.
+
+Therefore, $a = 0$ or $v = 0$.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $a \in \mathbb{F}$, $v \in V$, and $av = 0$. Prove that $a = 0$ or $v = 0$.
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+v = (x_1, x_2, \dots).
+\]
+Then
+\[
+av = (ax_1, ax_2, \dots).
+\]
+
+We are given that
+\[
+av = (0, 0, \dots).
+\]
+Hence,
+\[
+(ax_1, ax_2, \dots) = (0, 0, \dots).
+\]
+
+Equating corresponding components, we obtain
+\[
+ax_1 = 0, \; ax_2 = 0, \; \dots
+\]
+
+Thus, either $a = 0$ or $x_1 = 0$.  
+If $a \neq 0$, then
+\[
+x_1 = x_2 = \cdots = 0,
+\]
+which implies $v = 0$.
+
+Therefore, $a = 0$ or $v = 0$.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $v, w \in V$. Explain why there exists a unique $x \in V$ such that
+\[
+v + 3x = w.
+\]
+\end{exercise}
+
+\begin{solution}
+We are given
+\[
+v + 3x = w.
+\]
+
+Writing components,
+\[
+(v_1, v_2, \dots) + (3x_1, 3x_2, \dots) = (w_1, w_2, \dots).
+\]
+
+Equating components,
+\[
+v_1 + 3x_1 = w_1.
+\]
+
+Solving for $x_1$,
+\[
+x_1 = \frac{w_1 - v_1}{3}
+= \frac{1}{3}w_1 + \frac{1}{3}(-v_1).
+\]
+
+Extending this to all components,
+\[
+x = \left( \frac{w_1 - v_1}{3}, \frac{w_2 - v_2}{3}, \dots \right).
+\]
+
+Since vector addition and scalar multiplication are closed in vector spaces, we have $x \in V$.
+\end{solution}
+
+\begin{solution}[Alternate solution]
+Starting from
+\[
+v + 3x = w,
+\]
+subtract $v$ from both sides to obtain
+\[
+3x = w - v.
+\]
+
+Since $3 \neq 0$ in the field $\mathbb{F}$, scalar multiplication by $3$ is invertible. Thus,
+\[
+x = \frac{1}{3}(w - v).
+\]
+
+This element exists in $V$ by closure under scalar multiplication, and it is unique because scalar multiplication by a nonzero scalar is injective.
+\end{solution}
+
+\begin{exercise}{}
+The empty set is not a vector space. The empty set fails to satisfy only one
+of the requirements listed in the definition of a vector space. Which one?
+\end{exercise}
+
+\begin{solution}
+All axioms of a vector space that are stated in the form
+\[
+\text{for all } v, w \in V, \ \dots
+\]
+are vacuously true when $V = \varnothing$.
+
+However, the axiom requiring the existence of an additive identity states that
+there exists a vector $0 \in V$ such that
+\[
+v + 0 = v \quad \text{for all } v \in V.
+\]
+
+Since the empty set contains no elements, it cannot contain a zero vector.
+Therefore, the empty set fails the axiom requiring the existence of an additive
+identity.
+\end{solution}
+
+\newpage
+
+\begin{exercise}{}
+Show that in the definition of a vector space (1.20), the additive inverse
+condition can be replaced with the condition that
+\[
+0v = 0 \quad \text{for all } v \in V,
+\]
+where the $0$ on the left is the scalar $0$ and the $0$ on the right is the
+additive identity of $V$.
+\end{exercise}
+
+\begin{solution}
+We show that the collection of objects satisfying the vector space axioms is
+unchanged if the additive inverse axiom is replaced by the condition
+\[
+0v = 0 \quad \text{for all } v \in V.
+\]
+
+First, assume the usual vector space axioms, including the existence of
+additive inverses. Then for any $v \in V$,
+\[
+0v = (0 + 0)v = 0v + 0v.
+\]
+Adding the additive inverse of $0v$ to both sides gives
+\[
+0 = 0v,
+\]
+so the condition $0v = 0$ holds.
+
+Conversely, assume all vector space axioms except the additive inverse axiom,
+and instead assume that
+\[
+0v = 0 \quad \text{for all } v \in V.
+\]
+Let $v \in V$. Using distributivity,
+\[
+v + (-1)v = (1 + (-1))v = 0v = 0.
+\]
+Thus $(-1)v$ is an additive inverse of $v$.
+
+Therefore, the existence of additive inverses follows from the condition
+$0v = 0$, and the two definitions are equivalent.
+\end{solution}
+
+\newpage
+
+\begin{exercise}{}
+Let $\infty$ and $-\infty$ denote two distinct objects, neither of which is in
+$\mathbb{R}$. Define addition and scalar multiplication on
+$\mathbb{R} \cup \{\infty, -\infty\}$ as follows: addition and scalar
+multiplication of real numbers are as usual, and for $t \in \mathbb{R}$ define
+\[
+t\infty =
+\begin{cases}
+-\infty & \text{if } t < 0, \\
+0 & \text{if } t = 0, \\
+\infty & \text{if } t > 0,
+\end{cases}
+\qquad
+t(-\infty) =
+\begin{cases}
+\infty & \text{if } t < 0, \\
+0 & \text{if } t = 0, \\
+-\infty & \text{if } t > 0,
+\end{cases}
+\]
+and
+\[
+t + \infty = \infty + t = \infty + \infty = \infty,
+\]
+\[
+t + (-\infty) = (-\infty) + t = (-\infty) + (-\infty) = -\infty,
+\]
+\[
+\infty + (-\infty) = (-\infty) + \infty = 0.
+\]
+With these operations, is $\mathbb{R} \cup \{\infty, -\infty\}$ a vector space
+over $\mathbb{R}$? Explain.
+\end{exercise}
+
+\begin{solution}
+No. The set $\mathbb{R} \cup \{\infty, -\infty\}$ is not a vector space over
+$\mathbb{R}$ because addition is not associative.
+
+Indeed,
+\[
+(\infty + \infty) + (-\infty) = \infty + (-\infty) = 0,
+\]
+whereas
+\[
+\infty + (\infty + (-\infty)) = \infty + 0 = \infty.
+\]
+Since
+\[
+(\infty + \infty) + (-\infty) \neq \infty + (\infty + (-\infty)),
+\]
+addition is not associative. Therefore, $\mathbb{R} \cup \{\infty, -\infty\}$
+does not satisfy the axioms of a vector space.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $S$ is a nonempty set. Let $V^S$ denote the set of functions from $S$ to
+$V$. Define a natural addition and scalar multiplication on $V^S$, and show
+that $V^S$ is a vector space with these definitions.
+\end{exercise}
+
+\begin{solution}
+Let $f, g \in V^S$ and let $a \in \mathbb{F}$.
+
+Define addition in $V^S$ by
+\[
+(f + g)(s) = f(s) + g(s) \quad \text{for all } s \in S,
+\]
+and define scalar multiplication by
+\[
+(af)(s) = a f(s) \quad \text{for all } s \in S.
+\]
+
+We verify the vector space axioms.
+
+Since $V$ is closed under addition and scalar multiplication, the functions
+$f+g$ and $af$ map $S$ into $V$, so $V^S$ is closed under these operations.
+
+Addition in $V^S$ is commutative and associative because addition in $V$ is
+commutative and associative:
+\[
+(f+g)(s) = f(s) + g(s) = g(s) + f(s) = (g+f)(s),
+\]
+and
+\[
+((f+g)+h)(s) = (f(s)+g(s))+h(s) = f(s)+(g(s)+h(s)) = (f+(g+h))(s).
+\]
+
+Define the zero vector $0 \in V^S$ by
+\[
+0(s) = 0_V \quad \text{for all } s \in S,
+\]
+where $0_V$ is the zero vector in $V$. Then for all $f \in V^S$,
+\[
+(f+0)(s) = f(s) + 0_V = f(s),
+\]
+so $0$ is the additive identity.
+
+For each $f \in V^S$, define $-f \in V^S$ by
+\[
+(-f)(s) = -f(s).
+\]
+Then
+\[
+(f + (-f))(s) = f(s) + (-f(s)) = 0_V,
+\]
+so every element has an additive inverse.
+
+The distributive and scalar multiplication axioms follow directly from the
+corresponding axioms in $V$, since all operations are defined pointwise.
+
+Therefore, $V^S$ is a vector space.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $V$ is a real vector space. The complexification of $V$, denoted by
+$V_{\mathbb C}$, equals $V \times V$. An element of $V_{\mathbb C}$ is written
+as $u + iv$, where $u, v \in V$. Addition on $V_{\mathbb C}$ is defined by
+\[
+(u_1 + iv_1) + (u_2 + iv_2) = (u_1 + u_2) + i(v_1 + v_2),
+\]
+and complex scalar multiplication is defined by
+\[
+(a+bi)(u+iv) = (au - bv) + i(av + bu),
+\]
+for all $a,b \in \mathbb{R}$ and all $u,v \in V$.
+
+Prove that with these definitions, $V_{\mathbb C}$ is a complex vector space.
+\end{exercise}
+
+\begin{solution}
+We verify the vector space axioms.
+
+First, closure under addition and scalar multiplication holds because $V$ is
+closed under addition and real scalar multiplication.
+
+Addition in $V_{\mathbb C}$ is commutative and associative since addition in
+$V$ is commutative and associative:
+\[
+(u_1 + iv_1) + (u_2 + iv_2) = (u_2 + iv_2) + (u_1 + iv_1),
+\]
+and
+\[
+((u_1 + iv_1) + (u_2 + iv_2)) + (u_3 + iv_3)
+= (u_1 + iv_1) + ((u_2 + iv_2) + (u_3 + iv_3)).
+\]
+
+The additive identity is $0 + i0$, and the additive inverse of $u + iv$ is
+$(-u) + i(-v)$.
+
+Next, we verify the scalar multiplication axioms. Let
+$\alpha = a+bi$ and $\beta = c+di$ be complex scalars, and let $u+iv \in
+V_{\mathbb C}$.
+
+Associativity of scalar multiplication:
+\[
+\alpha(\beta(u+iv)) = (a+bi)((cu-dv)+i(cv+du))
+= ((ac-bd)u - (ad+bc)v) + i((ac-bd)v + (ad+bc)u),
+\]
+which equals
+\[
+(\alpha\beta)(u+iv).
+\]
+
+Identity:
+\[
+1(u+iv) = (1+0i)(u+iv) = u+iv.
+\]
+
+Distributivity over vector addition:
+\[
+\alpha((u_1+iv_1)+(u_2+iv_2)) = \alpha((u_1+u_2)+i(v_1+v_2))
+= \alpha(u_1+iv_1) + \alpha(u_2+iv_2).
+\]
+
+Distributivity over scalar addition:
+\[
+(\alpha+\beta)(u+iv) = \alpha(u+iv) + \beta(u+iv).
+\]
+
+Thus all vector space axioms are satisfied, and $V_{\mathbb C}$ is a complex
+vector space.
+
+Identifying $u \in V$ with $u + i0$, we may view $V$ as a real subspace of
+$V_{\mathbb C}$, and this construction generalizes the passage from
+$\mathbb{R}^n$ to $\mathbb{C}^n$.
+\end{solution}
+
+
+\end{document}
