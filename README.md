@@ -4,7 +4,8 @@ This repository contains independently written solutions to exercises from *Line
 
 ## Chapter 1
 
-  ### [Section 1A — ℝⁿ and ℂⁿ](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch1/1A-rn-and-cn.tex&command=pdflatex)
+  ### [Section 1A - ℝⁿ and ℂⁿ](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch1/1A-rn-and-cn.tex&command=pdflatex)
+  ### [Section 1B - Definition of Vector Space](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch1/1b-defn-of-vector-space.tex&command=pdflatex)
 
 
 ## Disclaimer
