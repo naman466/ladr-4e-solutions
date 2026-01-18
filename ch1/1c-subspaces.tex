@@ -1,0 +1,954 @@
+\documentclass[11pt]{article}
+
+% =====================================================
+% Layout & Typography
+% =====================================================
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% =====================================================
+% Math
+% =====================================================
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+
+% =====================================================
+% Lists & Links
+% =====================================================
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+% =====================================================
+% Framed Exercise Environment (LEGAL)
+% =====================================================
+\usepackage{mdframed}
+
+\newcounter{exercise}
+
+\newmdenv[
+  linewidth=0.6pt,
+  skipabove=1.2em,
+  skipbelow=1.2em,
+  innerleftmargin=1em,
+  innerrightmargin=1em,
+  innertopmargin=0.8em,
+  innerbottommargin=0.8em
+]{exercisebox}
+
+\newenvironment{exercise}[1]
+{%
+  \refstepcounter{exercise}
+  \begin{exercisebox}
+  \noindent\textbf{Problem \theexercise.} \textit{#1}\par\medskip
+}
+{%
+  \end{exercisebox}
+}
+
+% =====================================================
+% Solution Environment
+% =====================================================
+\newenvironment{solution}
+{\par\noindent\textbf{Solution.}\ }
+{\hfill$\square$\par}
+
+% =====================================================
+% Common Commands
+% =====================================================
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Null}{\operatorname{null}}
+\newcommand{\Range}{\operatorname{range}}
+
+% =====================================================
+% Metadata
+% =====================================================
+\title{Linear Algebra Done Right \\ \large Section 1C: Subspaces}
+\author{Naman Tyagi}
+\date{}
+
+% =====================================================
+% Document
+% =====================================================
+\begin{document}
+\maketitle
+
+\begin{exercise}{}
+For each of the following subsets of $\mathbb{F}^3$, determine whether it is a
+subspace of $\mathbb{F}^3$.
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)} 
+\[
+\{(x_1,x_2,x_3)\in\mathbb{F}^3 : x_1+2x_2+3x_3=0\}
+\]
+This set is a subspace of $\mathbb{F}^3$. The zero vector satisfies the equation,
+and the set is closed under addition and scalar multiplication.
+
+\medskip
+
+\textbf{(b)}
+\[
+\{(x_1,x_2,x_3)\in\mathbb{F}^3 : x_1+2x_2+3x_3=4\}
+\]
+This set is not a subspace of $\mathbb{F}^3$ because the zero vector does not
+satisfy the defining equation.
+
+\medskip
+
+\textbf{(c)}
+\[
+\{(x_1,x_2,x_3)\in\mathbb{F}^3 : x_1x_2x_3=0\}
+\]
+This set is not a subspace of $\mathbb{F}^3$. Although the zero vector belongs to
+the set, it is not closed under addition. For example,
+\[
+(1,0,1),(0,1,1)\in U,
+\]
+but
+\[
+(1,0,1)+(0,1,1)=(1,1,2)\notin U.
+\]
+
+\medskip
+
+\textbf{(d)}
+\[
+\{(x_1,x_2,x_3)\in\mathbb{F}^3 : x_1=5x_3\}
+\]
+This set is a subspace of $\mathbb{F}^3$. The zero vector satisfies the condition,
+and the set is closed under addition and scalar multiplication.
+\end{solution}
+
+\begin{exercise}{}
+Verify all assertions about subspaces in Example 1.35.
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)}
+If $b \in \mathbb{F}$, consider
+\[
+\{(x_1,x_2,x_3,x_4)\in\mathbb{F}^4 : x_3 = 5x_4 + b\}.
+\]
+The zero vector belongs to this set if and only if $0 = 5\cdot 0 + b$, which
+holds if and only if $b=0$. When $b=0$, the defining condition is linear and the
+set is closed under addition and scalar multiplication. Hence the set is a
+subspace of $\mathbb{F}^4$ if and only if $b=0$.
+
+\medskip
+
+\textbf{(b)}
+The set of continuous real-valued functions on $[0,1]$ contains the zero
+function. The sum of two continuous functions is continuous, and any scalar
+multiple of a continuous function is continuous. Therefore this set is a
+subspace of $\mathbb{R}^{[0,1]}$.
+
+\medskip
+
+\textbf{(c)}
+The set of differentiable real-valued functions on $\mathbb{R}$ contains the
+zero function. It is closed under addition and scalar multiplication because
+the sum and scalar multiple of differentiable functions are differentiable.
+Hence it is a subspace of $\mathbb{R}^{\mathbb{R}}$.
+
+\medskip
+
+\textbf{(d)}
+Let $b \in \mathbb{R}$ and consider the set of differentiable real-valued
+functions $f$ on $(0,3)$ such that $f'(2)=b$. The zero function satisfies this
+condition if and only if $b=0$. When $b=0$, the set is closed under addition and
+scalar multiplication. Thus this set is a subspace of $\mathbb{R}^{(0,3)}$ if
+and only if $b=0$.
+
+\medskip
+
+\textbf{(e)}
+The set of all sequences of complex numbers with limit $0$ contains the zero
+sequence. If two sequences converge to $0$, then their sum also converges to
+$0$, and any scalar multiple of a sequence converging to $0$ again converges to
+$0$. Therefore this set is a subspace of $\mathbb{C}^\infty$.
+\end{solution}
+
+\begin{exercise}{}
+Show that the set of differentiable real-valued functions $f$ on the interval
+$(-4,4)$ such that
+\[
+f'(-1) = 3f(2)
+\]
+is a subspace of $\mathbb{R}^{(-4,4)}$.
+\end{exercise}
+
+\begin{solution}
+The zero function belongs to the set, since
+\[
+0'(-1) = 0 = 3\cdot 0(2).
+\]
+
+Let $f$ and $g$ be functions in the set. Then
+\[
+(f+g)'(-1) = f'(-1) + g'(-1) = 3f(2) + 3g(2) = 3(f+g)(2),
+\]
+so the set is closed under addition.
+
+Let $f$ be in the set and let $a \in \mathbb{R}$. Then
+\[
+(af)'(-1) = a f'(-1) = a \cdot 3f(2) = 3(af)(2),
+\]
+so the set is closed under scalar multiplication.
+
+Hence the given set is a subspace of $\mathbb{R}^{(-4,4)}$.
+
+\end{solution}
+
+\begin{exercise}{}
+Suppose $b \in \mathbb{R}$. Show that the set of continuous real-valued functions
+$f$ on $[0,1]$ such that
+\[
+\int_0^1 f = b
+\]
+is a subspace of $\mathbb{R}^{[0,1]}$ if and only if $b = 0$.
+\end{exercise}
+
+\begin{solution}
+For the set to be a subspace, it must contain the zero vector. The zero function
+satisfies
+\[
+\int_0^1 0 = 0,
+\]
+so the zero function belongs to the set if and only if $b = 0$.
+
+If $b = 0$, the set contains the zero function. Moreover, if $f$ and $g$ are in
+the set, then
+\[
+\int_0^1 (f+g) = \int_0^1 f + \int_0^1 g = 0,
+\]
+and for any $a \in \mathbb{R}$,
+\[
+\int_0^1 af = a \int_0^1 f = 0.
+\]
+Thus the set is closed under addition and scalar multiplication, and hence is a
+subspace.
+
+If $b \neq 0$, the zero function does not belong to the set, so the set cannot be
+a subspace.
+\end{solution}
+
+\begin{exercise}{}
+Is $\mathbb{R}^2$ a subspace of the complex vector space $\mathbb{C}^2$?
+\end{exercise}
+
+\begin{solution}
+No. Although $\mathbb{R}^2$ is closed under addition and contains the zero
+vector, it is not closed under scalar multiplication by complex scalars.
+
+For example, consider the vector $(1,0) \in \mathbb{R}^2$. Multiplying by the
+complex scalar $i$ gives
+\[
+i(1,0) = (i,0),
+\]
+which does not belong to $\mathbb{R}^2$. Hence $\mathbb{R}^2$ is not a subspace
+of $\mathbb{C}^2$.
+\end{solution}
+
+\begin{exercise}{}
+(a) Is $\{(a,b,c)\in\mathbb{R}^3 : a^3=b^3\}$ a subspace of $\mathbb{R}^3$?
+
+(b) Is $\{(a,b,c)\in\mathbb{C}^3 : a^3=b^3\}$ a subspace of $\mathbb{C}^3$?
+\end{exercise}
+
+\begin{solution}
+\textbf{(a)} Over $\mathbb{R}$, the function $x \mapsto x^3$ is injective.
+Hence $a^3=b^3$ implies $a=b$. Therefore the set can be written as
+\[
+\{(a,a,c) : a,c \in \mathbb{R}\},
+\]
+which is a plane through the origin. It contains the zero vector and is closed
+under addition and scalar multiplication. Thus it is a subspace of
+$\mathbb{R}^3$.
+
+\medskip
+
+\textbf{(b)} Over $\mathbb{C}$, the implication $a^3=b^3 \Rightarrow a=b$ does not
+hold, because complex numbers have nontrivial cube roots of unity. In fact,
+$a^3=b^3$ if and only if $a=\omega b$ for some cube root of unity $\omega$.
+
+The set is therefore a union of three distinct planes and is not closed under
+addition. Hence it is not a subspace of $\mathbb{C}^3$.
+\end{solution}
+
+\begin{exercise}{}
+Prove or give a counterexample: If $U$ is a nonempty subset of $\mathbb{R}^2$
+such that $U$ is closed under addition and under taking additive inverses, then
+$U$ is a subspace of $\mathbb{R}^2$.
+\end{exercise}
+
+\begin{solution}
+The statement is false. Consider the set
+\[
+U = \{(a,b) \in \mathbb{R}^2 : a,b \in \mathbb{Z}\}.
+\]
+
+The set $U$ is nonempty and contains the zero vector $(0,0)$. It is closed under
+addition because the sum of two integer vectors has integer components, and it
+is closed under additive inverses because $-(a,b)=(-a,-b)$ also has integer
+components.
+
+However, $U$ is not closed under scalar multiplication by real numbers. For
+example,
+\[
+\frac{1}{2}(1,1) = \left(\frac{1}{2}, \frac{1}{2}\right) \notin U.
+\]
+Hence $U$ is not a subspace of $\mathbb{R}^2$.
+
+Therefore, closure under addition and additive inverses alone does not imply that
+a set is a subspace.
+\end{solution}
+
+\begin{exercise}{}
+Give an example of a nonempty subset $U$ of $\mathbb{R}^2$ such that $U$ is
+closed under scalar multiplication, but $U$ is not a subspace of
+$\mathbb{R}^2$.
+\end{exercise}
+
+\begin{solution}
+Consider the set
+\[
+U = \{(x,y) \in \mathbb{R}^2 : y = x^2\}.
+\]
+
+The set $U$ is nonempty because $(0,0) \in U$.
+
+If $(x,x^2) \in U$ and $a \in \mathbb{R}$, then
+\[
+a(x,x^2) = (ax, a^2 x^2) = (ax, (ax)^2),
+\]
+which belongs to $U$. Hence $U$ is closed under scalar multiplication.
+
+However, $U$ is not closed under addition. For example,
+\[
+(1,1),(2,4) \in U,
+\]
+but
+\[
+(1,1) + (2,4) = (3,5) \notin U,
+\]
+since $5 \neq 3^2$.
+
+Therefore, $U$ is not a subspace of $\mathbb{R}^2$.
+\end{solution}
+
+\begin{exercise}{}
+A function $f:\mathbb{R}\to\mathbb{R}$ is called periodic if there exists a
+positive number $p$ such that $f(x)=f(x+p)$ for all $x\in\mathbb{R}$. Is the set
+of periodic functions from $\mathbb{R}$ to $\mathbb{R}$ a subspace of
+$\mathbb{R}^{\mathbb{R}}$? Explain.
+\end{exercise}
+
+\begin{solution}
+No. The set of periodic functions is not a subspace of $\mathbb{R}^{\mathbb{R}}$
+because it is not closed under addition.
+
+Define
+\[
+f(x)=\cos x \quad \text{and} \quad g(x)=\cos(\pi x).
+\]
+The function $f$ is periodic with period $2\pi$, and $g$ is periodic with
+period $2$.
+
+Suppose, for contradiction, that $f+g$ is periodic. Then there exists a
+positive number $p$ such that
+\[
+\cos(x+p)+\cos(\pi(x+p))=\cos x+\cos(\pi x)
+\quad \text{for all } x\in\mathbb{R}.
+\]
+This implies that $p$ is a common period of both $f$ and $g$. Hence there exist
+integers $m,n$ such that
+\[
+p = 2\pi n \quad \text{and} \quad p = 2m.
+\]
+Equating these expressions gives
+\[
+2\pi n = 2m,
+\]
+and thus
+\[
+\pi = \frac{m}{n},
+\]
+which is impossible because $\pi$ is irrational.
+
+Therefore, no such $p$ exists, and $f+g$ is not periodic. Hence the set of
+periodic functions is not closed under addition and is not a subspace of
+$\mathbb{R}^{\mathbb{R}}$.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $V_1$ and $V_2$ are subspaces of $V$. Prove that $V_1 \cap V_2$ is a
+subspace of $V$.
+\end{exercise}
+
+\begin{solution}
+Because $V_1$ and $V_2$ are subspaces of $V$, each contains the zero vector.
+Hence $0 \in V_1 \cap V_2$.
+
+Let $u,v \in V_1 \cap V_2$. Then $u,v \in V_1$ and $u,v \in V_2$. Since $V_1$
+and $V_2$ are subspaces, they are closed under addition, so $u+v \in V_1$ and
+$u+v \in V_2$. Thus $u+v \in V_1 \cap V_2$.
+
+Let $a \in \mathbb{F}$ and let $u \in V_1 \cap V_2$. Then $u \in V_1$ and
+$u \in V_2$. Because $V_1$ and $V_2$ are subspaces, they are closed under scalar
+multiplication, so $au \in V_1$ and $au \in V_2$. Hence $au \in V_1 \cap V_2$.
+
+Therefore $V_1 \cap V_2$ contains the zero vector and is closed under addition
+and scalar multiplication. Thus $V_1 \cap V_2$ is a subspace of $V$.
+\end{solution}
+
+\begin{exercise}{}
+Prove that the intersection of every collection of subspaces of $V$ is a
+subspace of $V$.
+\end{exercise}
+
+\begin{solution}
+Let $\{V_\alpha\}_{\alpha \in A}$ be a collection of subspaces of $V$, and let
+\[
+W = \bigcap_{\alpha \in A} V_\alpha.
+\]
+
+Because each $V_\alpha$ is a subspace of $V$, each contains the zero vector.
+Hence $0 \in W$.
+
+Let $u,v \in W$. Then $u,v \in V_\alpha$ for every $\alpha \in A$. Since each
+$V_\alpha$ is a subspace, it is closed under addition, so $u+v \in V_\alpha$
+for every $\alpha \in A$. Therefore $u+v \in W$.
+
+Let $a \in \mathbb{F}$ and let $u \in W$. Then $u \in V_\alpha$ for every
+$\alpha \in A$. Because each $V_\alpha$ is closed under scalar multiplication,
+we have $au \in V_\alpha$ for every $\alpha \in A$. Hence $au \in W$.
+
+Thus $W$ contains the zero vector and is closed under addition and scalar
+multiplication. Therefore $W$ is a subspace of $V$.
+\end{solution}
+
+\begin{exercise}{}
+Prove that the union of two subspaces of $V$ is a subspace of $V$ if and only if
+one of the subspaces is contained in the other.
+\end{exercise}
+
+\begin{solution}
+Let $V_1$ and $V_2$ be subspaces of $V$.
+
+\medskip
+
+\textbf{($\Rightarrow$)}  
+Assume that $V_1 \cup V_2$ is a subspace of $V$. Suppose, for contradiction,
+that neither subspace is contained in the other. Then there exists
+$u \in V_1 \setminus V_2$ and $v \in V_2 \setminus V_1$.
+
+Since $u,v \in V_1 \cup V_2$ and $V_1 \cup V_2$ is a subspace, it is closed under
+addition, so $u+v \in V_1 \cup V_2$. Thus either $u+v \in V_1$ or $u+v \in V_2$.
+
+If $u+v \in V_1$, then
+\[
+v = (u+v) - u \in V_1,
+\]
+since $V_1$ is a subspace. This contradicts $v \notin V_1$.
+
+If $u+v \in V_2$, then
+\[
+u = (u+v) - v \in V_2,
+\]
+since $V_2$ is a subspace. This contradicts $u \notin V_2$.
+
+Both cases lead to contradictions. Hence one of the subspaces must be contained
+in the other.
+
+\medskip
+
+\textbf{($\Leftarrow$)}  
+If $V_1 \subseteq V_2$, then
+\[
+V_1 \cup V_2 = V_2,
+\]
+which is a subspace of $V$. Similarly, if $V_2 \subseteq V_1$, then
+$V_1 \cup V_2 = V_1$, which is also a subspace.
+
+\medskip
+
+Therefore, the union of two subspaces of $V$ is a subspace of $V$ if and only if
+one of the subspaces is contained in the other.
+\end{solution}
+
+\begin{exercise}{}
+Prove that the union of three subspaces of $V$ is a subspace of $V$ if and only if
+one of the subspaces contains the other two.
+\end{exercise}
+
+\begin{solution}
+Let $V_1$, $V_2$, and $V_3$ be subspaces of $V$.
+
+\medskip
+
+\textbf{($\Rightarrow$)}  
+Assume that $V_1 \cup V_2 \cup V_3$ is a subspace of $V$. Suppose, for
+contradiction, that none of the subspaces contains the other two. Then there
+exist
+\[
+u \in V_1 \setminus (V_2 \cup V_3)
+\quad \text{and} \quad
+v \in V_2 \setminus (V_1 \cup V_3).
+\]
+Both $u$ and $v$ belong to $V_1 \cup V_2 \cup V_3$. Since this union is a
+subspace, it is closed under addition, so
+\[
+u+v \in V_1 \cup V_2 \cup V_3.
+\]
+
+If $u+v \in V_1$, then
+\[
+v = (u+v) - u \in V_1,
+\]
+a contradiction. If $u+v \in V_2$, then
+\[
+u = (u+v) - v \in V_2,
+\]
+also a contradiction.
+
+Thus $u+v \in V_3$. Because $V_3$ is a subspace, it is closed under additive
+inverses, so
+\[
+u = (u+v) - v \in V_3,
+\]
+which contradicts $u \notin V_3$.
+
+Hence our assumption was false, and one of the subspaces must contain the other
+two.
+
+\medskip
+
+\textbf{($\Leftarrow$)}  
+If one of the subspaces contains the other two, say
+\[
+V_1 \supseteq V_2 \cup V_3,
+\]
+then
+\[
+V_1 \cup V_2 \cup V_3 = V_1,
+\]
+which is a subspace of $V$.
+
+\medskip
+
+Therefore, the union of three subspaces of $V$ is a subspace of $V$ if and only
+if one of the subspaces contains the other two.
+\end{solution}
+
+\begin{exercise}{}
+Suppose
+\[
+U = \{(x,-x,2x)\in\mathbb{F}^3 : x\in\mathbb{F}\}
+\quad \text{and} \quad
+W = \{(x,x,2x)\in\mathbb{F}^3 : x\in\mathbb{F}\}.
+\]
+Describe $U+W$ using symbols, and also give a description of $U+W$ that uses
+no symbols.
+\end{exercise}
+
+\begin{solution}
+An element of $U+W$ has the form
+\[
+(x,-x,2x) + (y,y,2y) = (x+y,\,-x+y,\,2(x+y)),
+\]
+where $x,y \in \mathbb{F}$. Hence
+\[
+U+W = \{(a,b,2a) \in \mathbb{F}^3 : a,b \in \mathbb{F}\}.
+\]
+
+In words, $U+W$ is the set of all vectors in $\mathbb{F}^3$ whose third
+coordinate is twice the first coordinate.
+\end{solution}
+
+\begin{exercise}{}
+Suppose $U$ is a subspace of $V$. What is $U + U$?
+\end{exercise}
+
+\begin{solution}
+We claim that $U + U = U$.
+
+First, let $u_1, u_2 \in U$. Since $U$ is a subspace, it is closed under
+addition, so $u_1 + u_2 \in U$. Hence $U + U \subseteq U$.
+
+Conversely, let $u \in U$. Because $0 \in U$, we may write
+\[
+u = u + 0,
+\]
+with both $u$ and $0$ belonging to $U$. Thus $u \in U + U$, and so
+$U \subseteq U + U$.
+
+Therefore $U + U = U$.
+\end{solution}
+
+\begin{exercise}{}
+Is the operation of addition on the subspaces of $V$ commutative? In other
+words, if $U$ and $W$ are subspaces of $V$, is $U + W = W + U$?
+\end{exercise}
+
+\begin{solution}
+Yes. Let $x \in U + W$. Then $x = u + w$ for some $u \in U$ and $w \in W$.
+Because vector addition in $V$ is commutative,
+\[
+x = u + w = w + u.
+\]
+Since $w \in W$ and $u \in U$, this shows that $x \in W + U$. Hence
+$U + W \subseteq W + U$.
+
+By the same argument with the roles of $U$ and $W$ reversed,
+$W + U \subseteq U + W$. Therefore,
+\[
+U + W = W + U.
+\]
+\end{solution}
+
+\begin{exercise}{}
+Is the operation of addition on the subspaces of $V$ associative? In other
+words, if $V_1, V_2, V_3$ are subspaces of $V$, is
+\[
+(V_1 + V_2) + V_3 = V_1 + (V_2 + V_3)?
+\]
+\end{exercise}
+
+\begin{solution}
+Yes. Let $x \in (V_1 + V_2) + V_3$. Then there exist vectors
+$u \in V_1$, $v \in V_2$, and $w \in V_3$ such that
+\[
+x = (u + v) + w.
+\]
+By associativity of vector addition in $V$,
+\[
+x = u + (v + w).
+\]
+Since $v + w \in V_2 + V_3$, it follows that $x \in V_1 + (V_2 + V_3)$. Hence
+\[
+(V_1 + V_2) + V_3 \subseteq V_1 + (V_2 + V_3).
+\]
+
+Conversely, let $x \in V_1 + (V_2 + V_3)$. Then there exist vectors
+$u \in V_1$, $v \in V_2$, and $w \in V_3$ such that
+\[
+x = u + (v + w).
+\]
+Again using associativity of vector addition,
+\[
+x = (u + v) + w.
+\]
+Since $u + v \in V_1 + V_2$, we have $x \in (V_1 + V_2) + V_3$. Thus
+\[
+V_1 + (V_2 + V_3) \subseteq (V_1 + V_2) + V_3.
+\]
+
+Therefore,
+\[
+(V_1 + V_2) + V_3 = V_1 + (V_2 + V_3).
+\]
+\end{solution}
+
+\begin{exercise}{}
+Does the operation of addition on the subspaces of $V$ have an additive
+identity? Which subspaces have additive inverses?
+\end{exercise}
+
+\begin{solution}
+Yes. The additive identity is the zero subspace $\{0\}$. For any subspace
+$U \subseteq V$,
+\[
+U + \{0\} = U,
+\]
+because every element of $U + \{0\}$ has the form $u + 0 = u$ with $u \in U$.
+
+Next, we determine which subspaces have additive inverses. A subspace $W$ would
+be an additive inverse of $U$ if
+\[
+U + W = \{0\}.
+\]
+This is possible only if $U = \{0\}$. Indeed, if $U \neq \{0\}$, then $U$
+contains a nonzero vector, and hence $U + W$ must contain nonzero vectors for
+any subspace $W$, so it cannot equal $\{0\}$.
+
+Therefore, the only subspace that has an additive inverse is the zero subspace
+itself.
+\end{solution}
+
+\begin{exercise}{}
+Prove or give a counterexample: If $V_1$, $V_2$, and $U$ are subspaces of $V$
+such that
+\[
+V_1 + U = V_2 + U,
+\]
+then $V_1 = V_2$.
+\end{exercise}
+
+\begin{solution}
+The statement is false.
+
+Let
+\[
+V = \mathbb{R}^3,
+\quad
+U = \operatorname{span}\{(0,0,1)\},
+\quad
+V_1 = \operatorname{span}\{(1,0,0)\},
+\quad
+V_2 = \operatorname{span}\{(1,0,0),(0,0,1)\}.
+\]
+
+Clearly, $V_1 \neq V_2$.
+
+However,
+\[
+V_1 + U
+= \operatorname{span}\{(1,0,0)\} + \operatorname{span}\{(0,0,1)\}
+= \operatorname{span}\{(1,0,0),(0,0,1)\},
+\]
+and
+\[
+V_2 + U
+= \operatorname{span}\{(1,0,0),(0,0,1)\} + \operatorname{span}\{(0,0,1)\}
+= \operatorname{span}\{(1,0,0),(0,0,1)\}.
+\]
+
+Thus,
+\[
+V_1 + U = V_2 + U
+\quad \text{but} \quad
+V_1 \neq V_2.
+\]
+
+Therefore, subspace addition does not satisfy cancellation.
+\end{solution}
+
+\begin{exercise}{}
+Suppose
+\[
+U = \{(x,x,y,y)\in\mathbb{F}^4 : x,y \in \mathbb{F}\}.
+\]
+Find a subspace $W$ of $\mathbb{F}^4$ such that
+\[
+\mathbb{F}^4 = U \oplus W.
+\]
+\end{exercise}
+
+\begin{solution}
+Let
+\[
+W = \{(a,-a,b,-b)\in\mathbb{F}^4 : a,b \in \mathbb{F}\}.
+\]
+
+We show that $\mathbb{F}^4 = U \oplus W$.
+
+First, we show that $U + W = \mathbb{F}^4$. Let
+$(u_1,u_2,u_3,u_4) \in \mathbb{F}^4$. Then
+\[
+(u_1,u_2,u_3,u_4)
+=
+\left(\tfrac{u_1+u_2}{2},\tfrac{u_1+u_2}{2},
+\tfrac{u_3+u_4}{2},\tfrac{u_3+u_4}{2}\right)
++
+\left(\tfrac{u_1-u_2}{2},-\tfrac{u_1-u_2}{2},
+\tfrac{u_3-u_4}{2},-\tfrac{u_3-u_4}{2}\right),
+\]
+where the first vector belongs to $U$ and the second belongs to $W$. Hence
+$U+W=\mathbb{F}^4$.
+
+Next, we show that $U \cap W = \{0\}$. If
+\[
+(x,x,y,y) = (a,-a,b,-b),
+\]
+then $x=a=-a$ and $y=b=-b$, which implies $x=y=0$. Therefore
+$U \cap W = \{0\}$.
+
+Thus $\mathbb{F}^4 = U \oplus W$.
+\end{solution}
+
+\begin{exercise}{}
+Suppose
+\[
+U=\{(x,y,x+y,x-y,2x)\in\mathbb{F}^5 : x,y\in\mathbb{F}\}.
+\]
+Find a subspace $W$ of $\mathbb{F}^5$ such that
+\[
+\mathbb{F}^5 = U \oplus W.
+\]
+\end{exercise}
+
+\begin{solution}
+We first write $U$ as a span:
+\[
+(x,y,x+y,x-y,2x)
+= x(1,0,1,1,2) + y(0,1,1,-1,0).
+\]
+Hence
+\[
+U=\operatorname{span}\{(1,0,1,1,2),(0,1,1,-1,0)\},
+\]
+and therefore $\dim U=2$.
+
+Since $\dim\mathbb{F}^5=5$, a complementary subspace $W$ must have dimension
+$3$. Define
+\[
+W=\operatorname{span}\{(0,0,1,0,0),(0,0,0,1,0),(0,0,0,0,1)\}.
+\]
+
+We show that $\mathbb{F}^5=U\oplus W$.
+
+First, the five vectors
+\[
+(1,0,1,1,2),\ (0,1,1,-1,0),\ (0,0,1,0,0),\ (0,0,0,1,0),\ (0,0,0,0,1)
+\]
+are linearly independent and thus span $\mathbb{F}^5$. Hence $U+W=\mathbb{F}^5$.
+
+Next, suppose a vector lies in $U\cap W$. From $W$, its first two coordinates
+are zero, while from $U$ it has the form $(x,y,x+y,x-y,2x)$. This forces
+$x=0$ and $y=0$, so the vector is the zero vector. Thus
+\[
+U\cap W=\{0\}.
+\]
+
+Therefore,
+\[
+\mathbb{F}^5 = U \oplus W.
+\]
+\end{solution}
+
+\begin{exercise}{}
+Suppose
+\[
+U=\{(x,y,x+y,x-y,2x)\in\mathbb{F}^5 : x,y\in\mathbb{F}\}.
+\]
+Find three subspaces $W_1, W_2, W_3$ of $\mathbb{F}^5$, none of which equals
+$\{0\}$, such that
+\[
+\mathbb{F}^5 = U \oplus (W_1 \oplus W_2 \oplus W_3).
+\]
+\end{exercise}
+
+\begin{solution}
+We first write $U$ as a span:
+\[
+(x,y,x+y,x-y,2x)
+= x(1,0,1,1,2) + y(0,1,1,-1,0).
+\]
+Hence
+\[
+U = \operatorname{span}\{(1,0,1,1,2),(0,1,1,-1,0)\},
+\]
+so $\dim U = 2$.
+
+Define
+\[
+W_1=\operatorname{span}\{(0,0,1,0,0)\}, \quad
+W_2=\operatorname{span}\{(0,0,0,1,0)\}, \quad
+W_3=\operatorname{span}\{(0,0,0,0,1)\}.
+\]
+
+Each $W_i$ is a nonzero subspace of $\mathbb{F}^5$. The vectors spanning
+$U, W_1, W_2,$ and $W_3$ are linearly independent, and together they span
+$\mathbb{F}^5$. Therefore,
+\[
+\mathbb{F}^5 = U \oplus W_1 \oplus W_2 \oplus W_3.
+\]
+\end{solution}
+
+\begin{exercise}{}
+Prove or give a counterexample: If $V_1$, $V_2$, and $U$ are subspaces of $V$
+such that
+\[
+V = V_1 \oplus U \quad \text{and} \quad V = V_2 \oplus U,
+\]
+then $V_1 = V_2$.
+\end{exercise}
+
+\begin{solution}
+The statement is false.
+
+Let $V=\mathbb{R}^2$ and let
+\[
+U=\operatorname{span}\{(1,0)\}.
+\]
+Define
+\[
+V_1=\operatorname{span}\{(0,1)\}
+\quad \text{and} \quad
+V_2=\operatorname{span}\{(1,1)\}.
+\]
+
+Then $U \cap V_1 = \{0\}$ and $U \cap V_2 = \{0\}$. Moreover,
+\[
+V_1 + U = \mathbb{R}^2
+\quad \text{and} \quad
+V_2 + U = \mathbb{R}^2.
+\]
+Hence
+\[
+V=\mathbb{R}^2 = V_1 \oplus U = V_2 \oplus U.
+\]
+
+However, $V_1 \neq V_2$. Therefore, even if two direct sum decompositions share
+the same subspace $U$, the complementary subspace need not be unique.
+\end{solution}
+
+\begin{exercise}{}
+A function $f:\mathbb{R}\to\mathbb{R}$ is called even if $f(-x)=f(x)$ for all
+$x\in\mathbb{R}$, and odd if $f(-x)=-f(x)$ for all $x\in\mathbb{R}$. Let $V_e$
+denote the set of real-valued even functions on $\mathbb{R}$ and let $V_o$
+denote the set of real-valued odd functions on $\mathbb{R}$. Show that
+\[
+\mathbb{R}^{\mathbb{R}} = V_e \oplus V_o.
+\]
+\end{exercise}
+
+\begin{solution}
+First, we show that every function $f \in \mathbb{R}^{\mathbb{R}}$ can be written
+as a sum of an even function and an odd function. Define
+\[
+f_e(x) = \frac{f(x)+f(-x)}{2}
+\quad \text{and} \quad
+f_o(x) = \frac{f(x)-f(-x)}{2}.
+\]
+Then $f_e$ is even and $f_o$ is odd. Moreover,
+\[
+f(x) = f_e(x) + f_o(x)
+\quad \text{for all } x \in \mathbb{R}.
+\]
+Hence
+\[
+\mathbb{R}^{\mathbb{R}} = V_e + V_o.
+\]
+
+Next, we show that the sum is direct. Suppose $f \in V_e \cap V_o$. Then $f$ is
+both even and odd, so for all $x$,
+\[
+f(x) = f(-x) = -f(x),
+\]
+which implies $f(x)=0$ for all $x$. Thus
+\[
+V_e \cap V_o = \{0\}.
+\]
+
+Therefore,
+\[
+\mathbb{R}^{\mathbb{R}} = V_e \oplus V_o.
+\]
+\end{solution}
+
+\end{document}
