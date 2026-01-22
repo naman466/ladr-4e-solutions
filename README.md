@@ -10,7 +10,7 @@ This repository contains independently written solutions to exercises from *Line
 
 ## Chapter 2 
 
-  ### [Section 2A - Span and Linear Independence]()
+  ### [Section 2A - Span and Linear Independence](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch2/2a-span-and-linear-independence.tex&command=lualatex)
 
 ## Disclaimer
 These are my own solutions written for personal study.
