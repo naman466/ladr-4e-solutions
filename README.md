@@ -8,6 +8,9 @@ This repository contains independently written solutions to exercises from *Line
   ### [Section 1B - Definition of Vector Space](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch1/1b-defn-of-vector-space.tex&command=pdflatex)
   ### [Section 1C - Subspaces](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch1/1c-subspaces.tex&command=pdflatex)
 
+## Chapter 2 
+
+  ### [Section 2A - Span and Linear Independence]()
 
 ## Disclaimer
 These are my own solutions written for personal study.
