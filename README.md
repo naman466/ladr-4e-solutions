@@ -11,6 +11,7 @@ This repository contains independently written solutions to exercises from *Line
 ## Chapter 2 
 
   ### [Section 2A - Span and Linear Independence](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch2/2a-span-and-linear-independence.tex&command=lualatex)
+  ### [Section 2B - Bases](https://latexonline.cc/compile?git=https://github.com/naman466/ladr-4e-solutions&target=ch2/2b-bases.tex&command=pdflatex)
 
 ## Disclaimer
 These are my own solutions written for personal study.
