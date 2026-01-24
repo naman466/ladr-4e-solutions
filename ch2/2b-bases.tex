@@ -1,0 +1,499 @@
+\documentclass[11pt]{article}
+
+% =====================================================
+% Layout & Typography
+% =====================================================
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% =====================================================
+% Math
+% =====================================================
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+
+% =====================================================
+% Lists & Links
+% =====================================================
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
+
+% =====================================================
+% Framed Exercise Environment (LEGAL)
+% =====================================================
+\usepackage{mdframed}
+
+\newcounter{exercise}
+
+\newmdenv[
+  linewidth=0.6pt,
+  skipabove=1.2em,
+  skipbelow=1.2em,
+  innerleftmargin=1em,
+  innerrightmargin=1em,
+  innertopmargin=0.8em,
+  innerbottommargin=0.8em
+]{exercisebox}
+
+\newenvironment{exercise}[1]
+{%
+  \refstepcounter{exercise}
+  \begin{exercisebox}
+  \noindent\textbf{Problem \theexercise.} \textit{#1}\par\medskip
+}
+{%
+  \end{exercisebox}
+}
+
+% =====================================================
+% Solution Environment
+% =====================================================
+\newenvironment{solution}
+{\par\noindent\textbf{Solution.}\ }
+{\hfill$\square$\par}
+
+% =====================================================
+% Common Commands
+% =====================================================
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Null}{\operatorname{null}}
+\newcommand{\Range}{\operatorname{range}}
+
+% =====================================================
+% Metadata
+% =====================================================
+\title{Linear Algebra Done Right \\ \large Section 2A: Span and Linear Independence}
+\author{Naman Tyagi}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+% =====================================================
+% Document
+% =====================================================
+\begin{exercise}{}
+Find all vector spaces that have exactly one basis.
+\end{exercise}
+
+\begin{solution}
+Let \(V\) be a vector space over a field \(\mathbb{F}\).
+
+If \(\dim V = 0\), then \(V = \{0\}\). The empty set is a basis of \(V\), and it is the only basis.
+
+Now suppose \(\dim V \ge 1\). Let \(\{v_1,\dots,v_n\}\) be a basis of \(V\). For any scalar \(\lambda \in \mathbb{F}\) with \(\lambda \neq 0,1\), the set
+\[
+\{\lambda v_1, v_2,\dots,v_n\}
+\]
+is also a basis of \(V\), distinct from the original one. Hence \(V\) has more than one basis.
+
+Therefore, the only vector space with exactly one basis is the zero vector space.
+\end{solution}
+
+
+\begin{exercise}{}
+Verify all assertions in Example 2.27.
+\end{exercise}
+
+\begin{solution}
+(a) Let \(e_1,\dots,e_n\) denote the vectors
+\[
+(1,0,\dots,0),\ (0,1,0,\dots,0),\ \dots,\ (0,\dots,0,1)
+\]
+in \(\mathbb{F}^n\). Every vector \((x_1,\dots,x_n)\in\mathbb{F}^n\) can be written as
+\[
+x_1 e_1 + \cdots + x_n e_n,
+\]
+so the list spans \(\mathbb{F}^n\). Linear independence is immediate because a linear combination
+\[
+a_1 e_1 + \cdots + a_n e_n = 0
+\]
+implies \(a_1=\cdots=a_n=0\). Hence this list is a basis of \(\mathbb{F}^n\).
+
+(b) Consider \((1,2),(3,5)\in\mathbb{F}^2\). If
+\[
+a(1,2)+b(3,5)=(0,0),
+\]
+then
+\[
+a+3b=0,\qquad 2a+5b=0.
+\]
+Solving gives \(a=b=0\), so the list is linearly independent. Because it has length \(2=\dim\mathbb{F}^2\), it is a basis of \(\mathbb{F}^2\).
+
+(c) Consider \((1,2,-4),(7,-5,6)\in\mathbb{F}^3\). If
+\[
+a(1,2,-4)+b(7,-5,6)=0,
+\]
+then
+\[
+a+7b=0,\quad 2a-5b=0,\quad -4a+6b=0.
+\]
+The first two equations imply \(a=b=0\), so the list is linearly independent. However, it has length \(2<3\), so it cannot span \(\mathbb{F}^3\) and hence is not a basis.
+
+(d) The list \((1,2),(3,5),(4,13)\) spans \(\mathbb{F}^2\) because \((1,2),(3,5)\) already form a basis. However, any list of three vectors in \(\mathbb{F}^2\) is linearly dependent. Thus this list is not a basis.
+
+(e) Let
+\[
+U=\{(x,x,y)\in\mathbb{F}^3:x,y\in\mathbb{F}\}.
+\]
+Every element of \(U\) can be written as
+\[
+(x,x,y)=x(1,1,0)+y(0,0,1),
+\]
+so the list \((1,1,0),(0,0,1)\) spans \(U\). If
+\[
+a(1,1,0)+b(0,0,1)=0,
+\]
+then \((a,a,b)=(0,0,0)\), implying \(a=b=0\). Thus the list is linearly independent and hence a basis of \(U\).
+
+(f) Let
+\[
+W=\{(x,y,z)\in\mathbb{F}^3:x+y+z=0\}.
+\]
+For \(x,y\in\mathbb{F}\),
+\[
+(x,y,-x-y)=x(1,0,-1)+y(0,1,-1)
+= x(1,-1,0)+ (x+y)(1,0,-1),
+\]
+so \(W\) is spanned by \((1,-1,0)\) and \((1,0,-1)\). If
+\[
+a(1,-1,0)+b(1,0,-1)=0,
+\]
+then \((a+b,-a,-b)=(0,0,0)\), which implies \(a=b=0\). Hence the list is a basis of \(W\).
+
+(g) Let \(\mathcal{P}_m(\mathbb{F})\) denote the vector space of polynomials over \(\mathbb{F}\) of degree at most \(m\). Every \(p\in\mathcal{P}_m(\mathbb{F})\) can be written uniquely as
+\[
+p(z)=a_0+a_1 z+\cdots+a_m z^m,
+\]
+so the list \(1,z,\dots,z^m\) spans \(\mathcal{P}_m(\mathbb{F})\). If
+\[
+a_0+a_1 z+\cdots+a_m z^m=0,
+\]
+then all coefficients are zero, so the list is linearly independent. Therefore it is a basis of \(\mathcal{P}_m(\mathbb{F})\).
+\end{solution}
+
+\begin{exercise}{}
+(a) Let \(U\) be the subspace of \(\mathbb{R}^5\) defined by
+\[
+U=\{(x_1,x_2,x_3,x_4,x_5)\in\mathbb{R}^5 : x_1=3x_2 \text{ and } x_3=7x_4\}.
+\]
+Find a basis of \(U\).
+
+(b) Extend the basis in (a) to a basis of \(\mathbb{R}^5\).
+
+(c) Find a subspace \(W\) of \(\mathbb{R}^5\) such that \(\mathbb{R}^5 = U \oplus W\).
+\end{exercise}
+
+\begin{solution}
+(a) Any vector in \(U\) has the form
+\[
+(x_1,x_2,x_3,x_4,x_5)=(3x_2,x_2,7x_4,x_4,x_5)
+= x_2(3,1,0,0,0)+x_4(0,0,7,1,0)+x_5(0,0,0,0,1).
+\]
+Thus
+\[
+\{(3,1,0,0,0),(0,0,7,1,0),(0,0,0,0,1)\}
+\]
+spans \(U\). It is linearly independent, so it is a basis of \(U\).
+
+(b) To extend this to a basis of \(\mathbb{R}^5\), add vectors that are linearly independent from those in (a), for example \((1,0,0,0,0)\) and \((0,0,1,0,0)\). Then
+\[
+\{(3,1,0,0,0),(0,0,7,1,0),(0,0,0,0,1),(1,0,0,0,0),(0,0,1,0,0)\}
+\]
+is a basis of \(\mathbb{R}^5\).
+
+(c) Let
+\[
+W=\operatorname{span}\{(1,0,0,0,0),(0,0,1,0,0)\}.
+\]
+Then \(U\cap W=\{0\}\) and \(\dim U+\dim W=3+2=5=\dim\mathbb{R}^5\). Hence
+\[
+\mathbb{R}^5=U\oplus W.
+\]
+\end{solution}
+
+\begin{exercise}{}
+(a) Let \(U\) be the subspace of \(\mathbb{C}^5\) defined by
+\[
+U=\{(z_1,z_2,z_3,z_4,z_5)\in\mathbb{C}^5 : 6z_1=z_2 \text{ and } z_3+2z_4+3z_5=0\}.
+\]
+Find a basis of \(U\).
+
+(b) Extend the basis in (a) to a basis of \(\mathbb{C}^5\).
+
+(c) Find a subspace \(W\) of \(\mathbb{C}^5\) such that \(\mathbb{C}^5 = U \oplus W\).
+\end{exercise}
+
+\begin{solution}
+(a) Any vector in \(U\) has the form
+\[
+(z_1,6z_1,z_3,z_4,z_5)
+\quad\text{with}\quad z_3=-2z_4-3z_5.
+\]
+Thus
+\[
+(z_1,6z_1,-2z_4-3z_5,z_4,z_5)
+= z_1(1,6,0,0,0)+z_4(0,0,-2,1,0)+z_5(0,0,-3,0,1).
+\]
+Hence
+\[
+\{(1,6,0,0,0),(0,0,-2,1,0),(0,0,-3,0,1)\}
+\]
+is a basis of \(U\).
+
+(b) Add two vectors linearly independent from those in (a), for example \((0,1,0,0,0)\) and \((0,0,1,0,0)\). Then
+\[
+\{(1,6,0,0,0),(0,0,-2,1,0),(0,0,-3,0,1),(0,1,0,0,0),(0,0,1,0,0)\}
+\]
+is a basis of \(\mathbb{C}^5\).
+
+(c) Let
+\[
+W=\operatorname{span}\{(0,1,0,0,0),(0,0,1,0,0)\}.
+\]
+Then \(U\cap W=\{0\}\) and \(\dim U+\dim W=3+2=5\). Hence
+\[
+\mathbb{C}^5=U\oplus W.
+\]
+\end{solution}
+
+\begin{exercise}{}
+Suppose \(V\) is finite-dimensional and \(U, W\) are subspaces of \(V\) such that
+\(V = U + W\). Prove that there exists a basis of \(V\) consisting of vectors in
+\(U \cup W\).
+\end{exercise}
+
+\begin{solution}
+Let \(\{u_1,\dots,u_m\}\) be a basis of \(U\). Let \(\{w_1,\dots,w_k\}\) be a basis of \(W\).
+
+The list
+\[
+u_1,\dots,u_m,w_1,\dots,w_k
+\]
+spans \(V\) because \(V = U + W\). Remove vectors from this list one at a time until a basis of \(V\) remains. Each remaining vector is still one of the \(u_i\) or one of the \(w_j\).
+
+Thus we obtain a basis of \(V\) consisting entirely of vectors in \(U \cup W\).
+\end{solution}
+
+\begin{exercise}{}
+Prove or give a counterexample: If \(p_0,p_1,p_2,p_3\) is a list in \(\mathcal{P}_3(\mathbb{F})\) such that none of the polynomials has degree \(2\), then \(p_0,p_1,p_2,p_3\) is not a basis of \(\mathcal{P}_3(\mathbb{F})\).
+\end{exercise}
+
+\begin{solution}
+The statement is false.
+
+Consider the list
+\[
+1,\; z,\; z^3,\; z^3+z^2
+\]
+in \(\mathcal{P}_3(\mathbb{F})\). None of these polynomials has degree \(2\).
+
+The list is linearly independent because the coefficient vectors with respect to
+\(\{1,z,z^2,z^3\}\) are linearly independent. Moreover, the polynomial \(z^2\) can be written as
+\[
+z^2 = (z^3+z^2) - z^3,
+\]
+so the list spans \(\mathcal{P}_3(\mathbb{F})\).
+
+Hence this list is a basis of \(\mathcal{P}_3(\mathbb{F})\), even though none of its elements has degree \(2\).
+\end{solution}
+
+\begin{exercise}{}
+Suppose \(v_1,v_2,v_3,v_4\) is a basis of \(V\). Prove that
+\[
+v_1+v_2,\; v_2+v_3,\; v_3+v_4,\; v_4
+\]
+is also a basis of \(V\).
+\end{exercise}
+
+\begin{solution}
+Because \(v_1,v_2,v_3,v_4\) is a basis of \(V\), it suffices to show that the given list is linearly independent.
+
+Suppose
+\[
+a_1(v_1+v_2)+a_2(v_2+v_3)+a_3(v_3+v_4)+a_4 v_4=0.
+\]
+Rewriting,
+\[
+a_1 v_1+(a_1+a_2)v_2+(a_2+a_3)v_3+(a_3+a_4)v_4=0.
+\]
+Since \(v_1,v_2,v_3,v_4\) is linearly independent, all coefficients must be zero:
+\[
+a_1=0,\quad a_1+a_2=0,\quad a_2+a_3=0,\quad a_3+a_4=0.
+\]
+From \(a_1=0\) we get \(a_2=0\), then \(a_3=0\), and finally \(a_4=0\).
+
+Thus the list is linearly independent. Because it has four vectors in a four-dimensional space, it is a basis of \(V\).
+\end{solution}
+
+\begin{exercise}{}
+Prove or give a counterexample: If \(v_1,v_2,v_3,v_4\) is a basis of \(V\) and \(U\) is a
+subspace of \(V\) such that \(v_1,v_2 \in U\) and \(v_3 \notin U\) and \(v_4 \notin U\),
+then \(v_1,v_2\) is a basis of \(U\).
+\end{exercise}
+
+\begin{solution}
+The statement is false.
+
+Let \(V=\mathbb{F}^4\) and let
+\[
+v_1=e_1,\quad v_2=e_2,\quad v_3=e_3,\quad v_4=e_4,
+\]
+the standard basis of \(\mathbb{F}^4\). Define
+\[
+U=\operatorname{span}\{e_1,e_2,e_3+e_4\}.
+\]
+Then \(v_1,v_2\in U\), but \(v_3\notin U\) and \(v_4\notin U\).
+
+However, \(\dim U=3\), so the list \(v_1,v_2\) does not span \(U\) and hence is not a basis of \(U\).
+\end{solution}
+
+\begin{exercise}{}
+Suppose \(v_1,\dots,v_m\) is a list of vectors in \(V\). For \(k\in\{1,\dots,m\}\), let
+\[
+w_k = v_1+\cdots+v_k.
+\]
+Show that \(v_1,\dots,v_m\) is a basis of \(V\) if and only if \(w_1,\dots,w_m\) is a
+basis of \(V\).
+\end{exercise}
+
+\begin{solution}
+Note that
+\[
+w_1=v_1 \quad\text{and}\quad w_k-w_{k-1}=v_k \ \text{for } k=2,\dots,m.
+\]
+Thus each \(w_k\) lies in \(\operatorname{span}(v_1,\dots,v_m)\) and each \(v_k\) lies in
+\(\operatorname{span}(w_1,\dots,w_m)\). Hence
+\[
+\operatorname{span}(v_1,\dots,v_m)=\operatorname{span}(w_1,\dots,w_m).
+\]
+
+If \(v_1,\dots,v_m\) is a basis of \(V\), then it spans \(V\) and is linearly independent.
+The equality of spans implies that \(w_1,\dots,w_m\) spans \(V\). To show linear
+independence, suppose
+\[
+a_1 w_1+\cdots+a_m w_m=0.
+\]
+Rewriting,
+\[
+(a_1+\cdots+a_m)v_1+(a_2+\cdots+a_m)v_2+\cdots+a_m v_m=0.
+\]
+Because \(v_1,\dots,v_m\) is linearly independent, we obtain \(a_m=0\), then
+\(a_{m-1}=0\), and continuing, \(a_1=0\). Hence \(w_1,\dots,w_m\) is linearly
+independent and therefore a basis of \(V\).
+
+Conversely, if \(w_1,\dots,w_m\) is a basis of \(V\), then it spans \(V\) and is linearly
+independent. The equality of spans implies that \(v_1,\dots,v_m\) spans \(V\). If
+\[
+b_1 v_1+\cdots+b_m v_m=0,
+\]
+then writing each \(v_k\) in terms of the \(w_j\) gives a linear combination of
+\(w_1,\dots,w_m\) equal to \(0\). By linear independence of the \(w_j\), all
+coefficients are zero, so \(b_1=\cdots=b_m=0\). Thus \(v_1,\dots,v_m\) is linearly
+independent and hence a basis of \(V\).
+\end{solution}
+
+\begin{exercise}{}
+Suppose \(v_1,\dots,v_m\) is a list of vectors in \(V\). For \(k\in\{1,\dots,m\}\), let
+\[
+w_k = v_1+\cdots+v_k.
+\]
+Show that \(v_1,\dots,v_m\) is a basis of \(V\) if and only if \(w_1,\dots,w_m\) is a
+basis of \(V\).
+\end{exercise}
+
+\begin{solution}
+Note that
+\[
+w_1=v_1 \quad\text{and}\quad w_k-w_{k-1}=v_k \ \text{for } k=2,\dots,m.
+\]
+Thus each \(w_k\) lies in \(\operatorname{span}(v_1,\dots,v_m)\) and each \(v_k\) lies in
+\(\operatorname{span}(w_1,\dots,w_m)\). Hence
+\[
+\operatorname{span}(v_1,\dots,v_m)=\operatorname{span}(w_1,\dots,w_m).
+\]
+
+If \(v_1,\dots,v_m\) is a basis of \(V\), then it spans \(V\) and is linearly independent.
+The equality of spans implies that \(w_1,\dots,w_m\) spans \(V\). To show linear
+independence, suppose
+\[
+a_1 w_1+\cdots+a_m w_m=0.
+\]
+Rewriting,
+\[
+(a_1+\cdots+a_m)v_1+(a_2+\cdots+a_m)v_2+\cdots+a_m v_m=0.
+\]
+Because \(v_1,\dots,v_m\) is linearly independent, we obtain \(a_m=0\), then
+\(a_{m-1}=0\), and continuing, \(a_1=0\). Hence \(w_1,\dots,w_m\) is linearly
+independent and therefore a basis of \(V\).
+
+Conversely, if \(w_1,\dots,w_m\) is a basis of \(V\), then it spans \(V\) and is linearly
+independent. The equality of spans implies that \(v_1,\dots,v_m\) spans \(V\). If
+\[
+b_1 v_1+\cdots+b_m v_m=0,
+\]
+then writing each \(v_k\) in terms of the \(w_j\) gives a linear combination of
+\(w_1,\dots,w_m\) equal to \(0\). By linear independence of the \(w_j\), all
+coefficients are zero, so \(b_1=\cdots=b_m=0\). Thus \(v_1,\dots,v_m\) is linearly
+independent and hence a basis of \(V\).
+\end{solution}
+
+\begin{exercise}{}
+Suppose \(V\) is a real vector space. Show that if \(v_1,\dots,v_n\) is a basis of \(V\)
+(as a real vector space), then \(v_1,\dots,v_n\) is also a basis of the
+complexification \(V_{\mathbb{C}}\) (as a complex vector space).
+\end{exercise}
+
+\begin{solution}
+Recall that \(V_{\mathbb{C}}=\{u+iv : u,v\in V\}\), with complex scalar multiplication.
+
+First we show that \(v_1,\dots,v_n\) spans \(V_{\mathbb{C}}\).
+Let \(u+iv\in V_{\mathbb{C}}\). Because \(v_1,\dots,v_n\) is a real basis of \(V\),
+there exist real scalars \(a_1,\dots,a_n\) and \(b_1,\dots,b_n\) such that
+\[
+u=\sum_{k=1}^n a_k v_k
+\quad\text{and}\quad
+v=\sum_{k=1}^n b_k v_k.
+\]
+Then
+\[
+u+iv=\sum_{k=1}^n (a_k+ib_k)v_k,
+\]
+so \(v_1,\dots,v_n\) spans \(V_{\mathbb{C}}\) over \(\mathbb{C}\).
+
+Next we show linear independence. Suppose
+\[
+c_1 v_1+\cdots+c_n v_n=0
+\]
+with \(c_k\in\mathbb{C}\). Write \(c_k=a_k+ib_k\) with \(a_k,b_k\in\mathbb{R}\). Then
+\[
+\sum_{k=1}^n a_k v_k + i\sum_{k=1}^n b_k v_k = 0.
+\]
+Thus
+\[
+\sum_{k=1}^n a_k v_k = 0
+\quad\text{and}\quad
+\sum_{k=1}^n b_k v_k = 0.
+\]
+Because \(v_1,\dots,v_n\) is linearly independent over \(\mathbb{R}\), we obtain
+\(a_k=b_k=0\) for all \(k\). Hence \(c_k=0\) for all \(k\), so the list is linearly
+independent over \(\mathbb{C}\).
+
+Therefore \(v_1,\dots,v_n\) is a basis of \(V_{\mathbb{C}}\).
+\end{solution}
+
+\end{document}
